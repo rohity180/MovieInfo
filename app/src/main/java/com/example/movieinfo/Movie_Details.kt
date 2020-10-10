@@ -1,5 +1,7 @@
 package com.example.movieinfo
 
+import android.graphics.Typeface
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
@@ -18,6 +20,9 @@ class Movie_Details : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie_details)
+        var Imageview_temp=findViewById<ImageView>(R.id.movie_poster)
+        Glide.with(this).load(R.drawable.beaker_cropped).into(Imageview_temp)
+        //var type:Typeface= Typeface.createFromAsset(assets,"/ubuntu_medium.ttf")
         var get_intent= intent
         var bundle=get_intent.extras
         //var movie_id=75780
@@ -33,6 +38,7 @@ class Movie_Details : AppCompatActivity() {
 
 
                 }
+
 
                 override fun onResponse(call: Call, response: Response) {
                     var body=response.body?.string()
@@ -64,7 +70,36 @@ class Movie_Details : AppCompatActivity() {
                                 Glide.with(this@Movie_Details).load("https://image.tmdb.org/t/p/w500/"+movie.poster_path.substring(1)).into(poster)
 
                             }
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                poster.clipToOutline=true
+                            }
+                            var length = findViewById<TextView>(R.id.length)
+                            var rating = findViewById<TextView>(R.id.rating)
+                            if(movie.runtime != null)
+                            {
+                                var h=(movie.runtime/60).toInt()
+                                var m=(movie.runtime%60).toInt()
+                                var hours=""
+                                var minutes=""
+                                hours = if(h<10){
+                                    "0${h}"
+                                }else{
+                                    h.toString()
+                                }
+                                minutes = if(m<10){
+                                    "0${m}"
+                                }else{
+                                    m.toString()
+                                }
+                                length.text="${hours} h : ${minutes} m"
+
+                            }
+                            if(movie.vote_average != null)
+                            {
+                                rating.text= String.format("%.1f", movie.vote_average)
+                            }
                             title.text=movie.title+" (${calendar.get(Calendar.YEAR)})"
+                            //title.setTypeface(type)
                             overview.text=movie.overview
                         }
 

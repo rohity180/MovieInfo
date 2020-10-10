@@ -47,8 +47,8 @@ class rv_horizontal_adapter(val ctx:Context, val top_rated_list:results):Recycle
         calendar.time=date
         //val cal: Calendar = Calendar.getInstance()
         //val d = Date(page_data.entry_date)
-//var imagev = holder.view.findViewById<ImageView>(R.id.photo)
-            holder.view.title.setText(movie.title+" (${calendar.get(Calendar.YEAR)})")
+        //var imagev = holder.view.findViewById<ImageView>(R.id.photo)
+        holder.view.title.setText(movie.title+" (${calendar.get(Calendar.YEAR)})")
         holder.view.description.setText(movie.overview)
 
         Glide.with(holder.view.context).load("https://image.tmdb.org/t/p/w500/"+movie.poster_path.substring(1)).into(holder.view.photo)
